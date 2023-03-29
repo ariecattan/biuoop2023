@@ -1,0 +1,61 @@
+<project default="compile">
+    <!-- Define a set of paths (file names) to pass to checkstyle - all .java files under `src` and its subdirectories (recursively)-->
+    <path id="sourceFiles">
+        <fileset dir="src" casesensitive="yes">
+            <include name="**/*.java"/>
+        </fileset>
+    </path>
+
+    <!-- Define a property, which is like a variable for the build file, -->
+    <!--  with the classpath for all compilation & execution targets. -->
+    <property name="classpath" value="bin:biuoop-1.4.jar" />
+
+    <!-- Compile all java files under `src`, and export .class files into `bin` -->
+    <target name="compile">
+        <mkdir dir="bin"/>
+        <javac classpath="${classpath}" srcdir="src" destdir="bin" includeantruntime="false"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+
+    <!--    This target is for your convenience; we will not grade it. -->
+    <target name="run-gui-example" depends="compile" >
+        <java classname="SimpleGuiExample" classpath="${classpath}" fork="true"/>
+    </target>
+
+    <target name="run2" depends="compile" >
+        <java classname="AbstractArtDrawing" classpath="${classpath}" fork="true"/>
+    </target>
+
+    <target name="run3.2" depends="compile" >
+        <java classname="BouncingBallAnimation" classpath="${classpath}" fork="true">
+            <!-- This specifies to pass the arguments from the `ant` command into the `java` execution command -->
+            <arg line="${args}"/>
+        </java>
+    </target>
+
+    <target name="run3.3" depends="compile" >
+        <java classname="MultipleBouncingBallsAnimation" classpath="${classpath}" fork="true">
+            <!-- This specifies to pass the arguments from the `ant` command into the `java` execution command -->
+            <arg line="${args}"/>
+        </java>
+    </target>
+
+    <target name="run3.4" depends="compile" >
+        <java classname="MultipleFramesBouncingBallsAnimation" classpath="${classpath}" fork="true">
+            <!-- This specifies to pass the arguments from the `ant` command into the `java` execution command -->
+            <arg line="${args}"/>
+        </java>
+    </target>
+
+    <!-- Run checkstyle on all our source files -->
+    <target name="check">
+        <java jar="checkstyle-8.44-all.jar" fork="true">
+            <arg line="-c biuoop.xml" />
+            <arg line="src/*.java" />
+        </java>
+    </target>
+
+</project>
